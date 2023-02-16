@@ -1,23 +1,28 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import CustomContent from '../../components/antDesing/CustomContent';
 import MainPage from '../../components/home/MainPage';
 import { getApiResults } from '../../utils/APIs';
-import { ICharacter, IPeople } from '../../utils/interfaces';
+import { showNotification } from '../../utils/functions';
+import { ICharacter, IRespond } from '../../utils/interfaces';
 
 const Main = (): React.ReactElement => {
-	const [people, setPeople] = useState<ICharacter[]>();
+	const [people, setPeople] = useState<IRespond>();
+	const [characters, setCharacters] = useState<ICharacter[]>();
 
 	const getPeople = async () => {
-		const response: IPeople = await getApiResults(
+		const response: IRespond = await getApiResults(
 			'https://swapi.dev/api/people/'
 		);
 
 		if (response.error) {
-			alert(response.error);
+			showNotification({
+				message: response.error,
+				type: 'error',
+			});
 			return;
 		}
-		setPeople(response.results);
+		setPeople(response);
+		setCharacters(response.results);
 	};
 
 	useEffect(() => {
@@ -26,7 +31,13 @@ const Main = (): React.ReactElement => {
 
 	return (
 		<CustomContent style={{ padding: 50 }}>
-			<MainPage people={people} />
+			<MainPage
+				people={people}
+				setPeople={setPeople}
+				setCharacters={setCharacters}
+				characters={characters}
+				getAllPeople={getPeople}
+			/>
 		</CustomContent>
 	);
 };

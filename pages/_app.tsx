@@ -5,7 +5,7 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
 	return (
-		<CustomLayout style={{ backgroundColor: '#0a0a0a' }}>
+		<CustomLayout style={{ backgroundColor: '#04011b' }}>
 			<CustomHeader style={{ backgroundColor: 'black' }}>
 				<NavBar />
 			</CustomHeader>

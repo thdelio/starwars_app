@@ -1,34 +1,53 @@
 import { Form } from 'antd';
 import Title from 'antd/lib/typography/Title';
-import React, { FC } from 'react';
-import { ICharacter } from '../../utils/interfaces';
-import CustomCol from '../antDesing/CustomCol';
-import CustomFormItem from '../antDesing/CustomFormItem';
+import React, { Dispatch, FC, SetStateAction } from 'react';
+import { ICharacter, IRespond } from '../../utils/interfaces';
 import CustomRow from '../antDesing/CustomRow';
-import CustomSelect from '../antDesing/CustomSelect';
+import FilmSelect from './FilmSelect';
+import Pagination from './Pagination';
 import ShowCharacter from './ShowCharacter';
 
 interface IProps {
-	people: ICharacter[];
+	people: IRespond;
+	setPeople: Dispatch<SetStateAction<IRespond>>;
+	characters: ICharacter[];
+	setCharacters: Dispatch<SetStateAction<ICharacter[]>>;
+	getAllPeople: () => void;
 }
 
-const MainPage: FC<IProps> = ({ people }): React.ReactElement => {
+const MainPage: FC<IProps> = ({
+	people,
+	setPeople,
+	characters,
+	setCharacters,
+	getAllPeople,
+}): React.ReactElement => {
 	return (
 		<Form>
-			<CustomRow justify={'center'}>
-				<CustomCol xs={24} md={16} lg={12}>
-					<CustomFormItem label={<strong className='text'>Movies</strong>}>
-						<CustomSelect placeholder='Movies'></CustomSelect>
-					</CustomFormItem>
-				</CustomCol>
+			<FilmSelect
+				setCharacters={setCharacters}
+				setPeople={setPeople}
+				getAllPeople={getAllPeople}
+			/>
+
+			{characters?.length && (
+				<CustomRow justify={'center'}>
+					<Title level={2} id='text'>
+						Characters
+					</Title>
+				</CustomRow>
+			)}
+
+			<CustomRow justify={'center'} style={{ paddingTop: 25 }}>
+				<ShowCharacter characters={characters} />
 			</CustomRow>
-			<CustomRow justify={'center'}>
-				<Title level={2} id='text'>
-					Characters
-				</Title>
-			</CustomRow>
-			<CustomRow justify={'center'}>
-				<ShowCharacter people={people} />
+
+			<CustomRow justify={'center'} style={{ paddingTop: 25 }}>
+				<Pagination
+					people={people}
+					setPeople={setPeople}
+					setCharacters={setCharacters}
+				/>
 			</CustomRow>
 		</Form>
 	);

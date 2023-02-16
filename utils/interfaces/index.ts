@@ -15,13 +15,50 @@ interface ICharacter {
 	starships: string[];
 	url: string;
 	vehicles: string[];
-}
-
-interface IPeople {
-	next: string;
-	previous: string;
-	results: ICharacter[];
 	error?: string;
 }
 
-export type { IPeople, ICharacter };
+interface IFilm {
+	title: string;
+	episode_id: number;
+	opening_crawl: string;
+	director: string;
+	producer: string;
+	release_date: string;
+	characters: string[];
+	planets: string[];
+	starships: string[];
+	vehicles: string[];
+	species: string[];
+	created: string;
+	edited: string;
+	url: string;
+	error?: string;
+}
+
+interface IPlanets {
+	climate: string;
+	created: string;
+	diameter: string;
+	edited: string;
+	films: string[];
+	gravity: number;
+	name: string;
+	orbital_period: number;
+	population: number;
+	residents: string[];
+	rotation_period: number;
+	surface_water: number;
+	terrain: string;
+	url: string;
+	error?: string;
+}
+
+interface IRespond {
+	next: string;
+	previous: string;
+	results: any[];
+	error?: string;
+}
+
+export type { IRespond, ICharacter, IFilm, IPlanets };
