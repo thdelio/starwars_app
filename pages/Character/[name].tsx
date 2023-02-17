@@ -1,6 +1,7 @@
 import { Divider, Form, Input, Spin, Table } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import CustomCard from '../../components/antDesing/CustomCard';
@@ -9,6 +10,7 @@ import CustomContent from '../../components/antDesing/CustomContent';
 import CustomFormItem from '../../components/antDesing/CustomFormItem';
 import CustomRow from '../../components/antDesing/CustomRow';
 import ShowCustomMessage from '../../components/Messages/ShowCustomMessage';
+
 import { getApiResults } from '../../utils/APIs';
 import { showNotification } from '../../utils/functions';
 import { ICharacter, IFilm, IPlanets, IRespond } from '../../utils/interfaces';
@@ -25,6 +27,7 @@ const Character = (): React.ReactElement => {
 			title: 'Title',
 			dataIndex: 'title',
 			key: 'title',
+			render: (record) => <Link href={`/Movies/${record}`}>{record}</Link>,
 		},
 		{
 			title: 'Director',
@@ -180,6 +183,7 @@ const Character = (): React.ReactElement => {
 							loading={!movies}
 							columns={columns}
 							scroll={{ x: 'calc(700px + 50%)', y: 240 }}
+							rowKey={(record) => record.episode_id}
 						/>
 					</CustomCard>
 				) : (
