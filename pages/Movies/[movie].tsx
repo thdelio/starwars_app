@@ -51,9 +51,6 @@ const Presentation = (): React.ReactElement => {
 			) : exist ? (
 				<div>
 					<div className='fade'></div>
-					<section className='intro'>
-						A long time ago, in a galaxy far, far away....
-					</section>
 
 					<section className='star-wars'>
 						<div className='crawl'>
