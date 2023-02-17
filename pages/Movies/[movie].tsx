@@ -14,35 +14,35 @@ const Presentation = (): React.ReactElement => {
 	const [film, setFilm] = useState<IFilm>();
 
 	useEffect(() => {
-		getMovie(movie);
-	}, [movie]);
+		const getMovie = async (name: string | string[]) => {
+			const response: IRespond = await getApiResults(
+				`https://swapi.dev/api/films/?search=${name}`
+			);
 
-	const getMovie = async (name: string | string[]) => {
-		const response: IRespond = await getApiResults(
-			`https://swapi.dev/api/films/?search=${name}`
-		);
-
-		if (response.error) {
-			showNotification({
-				message: response.error,
-				type: 'error',
-			});
-			return;
-		}
-
-		const films: IFilm = response.results.find(
-			(person) => person.title == movie
-		);
-
-		if (response?.results.length) {
-			if (films) {
-				setFilm(films);
-				setExist(true);
+			if (response.error) {
+				showNotification({
+					message: response.error,
+					type: 'error',
+				});
 				return;
 			}
-			setExist(false);
-		}
-	};
+
+			const films: IFilm = response.results.find(
+				(person) => person.title == movie
+			);
+
+			if (response?.results.length) {
+				if (films) {
+					setFilm(films);
+					setExist(true);
+					return;
+				}
+				setExist(false);
+			}
+		};
+
+		getMovie(movie);
+	}, [movie]);
 
 	return (
 		<div>

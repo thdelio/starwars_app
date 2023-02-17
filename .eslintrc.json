@@ -9,7 +9,11 @@
 			"version": "detect"
 		}
 	},
-	"extends": ["eslint:recommended", "plugin:react/recommended"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"next/core-web-vitals"
+	],
 	"globals": {
 		"Atomics": "readonly",
 		"SharedArrayBuffer": "readonly"
@@ -29,6 +33,7 @@
 		"react/display-name": "off",
 		"no-unused-vars": "off",
 		"no-unused-expressions": "off",
+		"no-mixed-spaces-and-tabs": "off",
 		"comma-dangle": "off",
 		"sort-imports": [
 			"error",
