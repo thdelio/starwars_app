@@ -77,7 +77,6 @@ const FilmSelect: FC<IProps> = ({
 								setCharacters(null);
 								setPeople(null);
 								const find = films?.find((film) => film.episode_id == value);
-								console.log({ find: find });
 								await getCharacters(find?.characters);
 								return;
 							}

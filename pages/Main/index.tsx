@@ -27,13 +27,6 @@ const Main = (): React.ReactElement => {
 	};
 
 	useEffect(() => {
-		if (router.isReady) {
-			// Code using query
-			console.log(router.query);
-		}
-	}, [router.isReady]);
-
-	useEffect(() => {
 		if (search) {
 			getPeople(`https://swapi.dev/api/people/?search=${search}`);
 		} else {

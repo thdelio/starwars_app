@@ -47,49 +47,50 @@ const Character = (): React.ReactElement => {
 	];
 
 	useEffect(() => {
-		getCharacters(name);
-	}, [name]);
+		const getCharacters = async (name: string | string[]) => {
+			const response: IRespond = await getApiResults(
+				`https://swapi.dev/api/people/?search=${name}`
+			);
 
-	const getCharacters = async (name: string | string[]) => {
-		const response: IRespond = await getApiResults(
-			`https://swapi.dev/api/people/?search=${name}`
-		);
-
-		if (response.error) {
-			showNotification({
-				message: response.error,
-				type: 'error',
-			});
-			return;
-		}
-
-		const character: ICharacter = response.results.find(
-			(person) => person.name == name
-		);
-
-		if (response?.results.length) {
-			if (character) {
-				const films: IFilm[] = [];
-				const planet: IPlanets = await getHomeWorld(character?.homeworld);
-
-				form.setFieldsValue({
-					...character,
-					edited: dayjs(character?.edited).format('MM/DD/YYYY'),
-					homeworld: planet?.name,
+			if (response.error) {
+				showNotification({
+					message: response.error,
+					type: 'error',
 				});
-
-				for await (const film of character?.films) {
-					const response = await getFilms(film);
-					films.push(response);
-				}
-
-				setMovies(films);
-				setExist(true);
 				return;
 			}
-			setExist(false);
-		}
-	};
+
+			const character: ICharacter = response.results.find(
+				(person) => person.name == name
+			);
+
+			if (response?.results.length) {
+				if (character) {
+					const films: IFilm[] = [];
+					const planet: IPlanets = await getHomeWorld(character?.homeworld);
+
+					form.setFieldsValue({
+						...character,
+						edited: dayjs(character?.edited).format('MM/DD/YYYY'),
+						homeworld: planet?.name,
+					});
+					if (character.films) {
+						for await (const film of character.films) {
+							const response = await getFilms(film);
+							films.push(response);
+						}
+					}
+
+					setMovies(films);
+					setExist(true);
+					return;
+				}
+				setExist(false);
+			}
+		};
+
+		getCharacters(name);
+	}, [name, form]);
 
 	const getFilms = async (API: string) => {
 		const response = await getApiResults(API);
