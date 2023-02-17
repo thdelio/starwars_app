@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import CustomContent from '../../components/antDesing/CustomContent';
 import MainPage from '../../components/home/MainPage';
@@ -8,11 +9,11 @@ import { ICharacter, IRespond } from '../../utils/interfaces';
 const Main = (): React.ReactElement => {
 	const [people, setPeople] = useState<IRespond>();
 	const [characters, setCharacters] = useState<ICharacter[]>();
+	const router = useRouter();
+	const { search } = router.query;
 
-	const getPeople = async () => {
-		const response: IRespond = await getApiResults(
-			'https://swapi.dev/api/people/'
-		);
+	const getPeople = async (API) => {
+		const response: IRespond = await getApiResults(API);
 
 		if (response.error) {
 			showNotification({
@@ -26,8 +27,19 @@ const Main = (): React.ReactElement => {
 	};
 
 	useEffect(() => {
-		getPeople();
-	}, []);
+		if (router.isReady) {
+			// Code using query
+			console.log(router.query);
+		}
+	}, [router.isReady]);
+
+	useEffect(() => {
+		if (search) {
+			getPeople(`https://swapi.dev/api/people/?search=${search}`);
+		} else {
+			getPeople('https://swapi.dev/api/people/');
+		}
+	}, [search]);
 
 	return (
 		<CustomContent style={{ padding: 50 }}>

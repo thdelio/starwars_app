@@ -12,7 +12,7 @@ interface IProps {
 	setPeople: Dispatch<SetStateAction<IRespond>>;
 	characters: ICharacter[];
 	setCharacters: Dispatch<SetStateAction<ICharacter[]>>;
-	getAllPeople: () => void;
+	getAllPeople: (data) => void;
 }
 
 const MainPage: FC<IProps> = ({

@@ -12,12 +12,11 @@ import { ICharacter, IFilm, IRespond } from '../../utils/interfaces';
 import CustomCol from '../antDesing/CustomCol';
 import CustomFormItem from '../antDesing/CustomFormItem';
 import CustomRow from '../antDesing/CustomRow';
-import CustomSelect from '../antDesing/CustomSelect';
 
 interface IProps {
 	setPeople: Dispatch<SetStateAction<IRespond>>;
 	setCharacters: Dispatch<SetStateAction<ICharacter[]>>;
-	getAllPeople: () => void;
+	getAllPeople: (data) => void;
 }
 
 const FilmSelect: FC<IProps> = ({
@@ -71,7 +70,7 @@ const FilmSelect: FC<IProps> = ({
 		<CustomRow justify={'center'}>
 			<CustomCol xs={24} md={16} lg={12}>
 				<CustomFormItem label={<strong id='text'>Movies</strong>}>
-					<CustomSelect
+					<Select
 						placeholder='Movies'
 						onChange={async (value) => {
 							if (value) {
@@ -82,7 +81,7 @@ const FilmSelect: FC<IProps> = ({
 								await getCharacters(find?.characters);
 								return;
 							}
-							await getAllPeople();
+							await getAllPeople('https://swapi.dev/api/people/');
 						}}
 					>
 						{films?.map((film) => (
@@ -93,7 +92,7 @@ const FilmSelect: FC<IProps> = ({
 								{film.title}
 							</Select.Option>
 						))}
-					</CustomSelect>
+					</Select>
 				</CustomFormItem>
 			</CustomCol>
 		</CustomRow>

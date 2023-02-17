@@ -1,4 +1,4 @@
-import { Divider, Form, Input, Table } from 'antd';
+import { Divider, Form, Input, Spin, Table } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import CustomCol from '../../components/antDesing/CustomCol';
 import CustomContent from '../../components/antDesing/CustomContent';
 import CustomFormItem from '../../components/antDesing/CustomFormItem';
 import CustomRow from '../../components/antDesing/CustomRow';
+import ShowCustomMessage from '../../components/Messages/ShowCustomMessage';
 import { getApiResults } from '../../utils/APIs';
 import { showNotification } from '../../utils/functions';
 import { ICharacter, IFilm, IPlanets, IRespond } from '../../utils/interfaces';
@@ -16,31 +17,34 @@ const Character = (): React.ReactElement => {
 	const router = useRouter();
 	const [form] = Form.useForm();
 	const { name } = router.query;
-	const [exist, setExist] = useState<boolean>(false);
+	const [exist, setExist] = useState<boolean>();
 	const [movies, setMovies] = useState<IFilm[]>();
 
 	const columns = [
 		{
 			title: 'Title',
 			dataIndex: 'title',
+			key: 'title',
 		},
 		{
 			title: 'Director',
 			dataIndex: 'director',
+			key: 'director',
 		},
 		{
 			title: 'Producer',
 			dataIndex: 'producer',
+			key: 'producer',
 		},
 		{
 			title: 'Release Date',
 			dataIndex: 'release_date',
+			key: 'release_date',
 		},
 	];
 
 	useEffect(() => {
 		getCharacters(name);
-		console.log(name);
 	}, [name]);
 
 	const getCharacters = async (name: string | string[]) => {
@@ -60,24 +64,27 @@ const Character = (): React.ReactElement => {
 			(person) => person.name == name
 		);
 
-		if (character) {
-			setExist(true);
-			const films: IFilm[] = [];
+		if (response?.results.length) {
+			if (character) {
+				const films: IFilm[] = [];
+				const planet: IPlanets = await getHomeWorld(character?.homeworld);
 
-			for await (const film of character?.films) {
-				const response = await getFilms(film);
-				films.push(response);
+				form.setFieldsValue({
+					...character,
+					edited: dayjs(character?.edited).format('MM/DD/YYYY'),
+					homeworld: planet?.name,
+				});
+
+				for await (const film of character?.films) {
+					const response = await getFilms(film);
+					films.push(response);
+				}
+
+				setMovies(films);
+				setExist(true);
+				return;
 			}
-
-			const planet: IPlanets = await getHomeWorld(character?.homeworld);
-
-			setMovies(films);
-
-			form.setFieldsValue({
-				...character,
-				edited: dayjs(character?.edited).format('MM/DD/YYYY'),
-				homeworld: planet?.name,
-			});
+			setExist(false);
 		}
 	};
 
@@ -117,8 +124,10 @@ const Character = (): React.ReactElement => {
 
 	return (
 		<CustomContent style={{ padding: 50 }}>
-			{exist && (
-				<Form form={form}>
+			<Form form={form}>
+				{exist === false ? (
+					<ShowCustomMessage notResult />
+				) : exist ? (
 					<CustomCard>
 						<CustomRow justify={'center'}>
 							<Divider>
@@ -168,12 +177,17 @@ const Character = (): React.ReactElement => {
 							style={{ paddingTop: 25 }}
 							title={() => caption}
 							dataSource={movies}
+							loading={!movies}
 							columns={columns}
 							scroll={{ x: 'calc(700px + 50%)', y: 240 }}
 						/>
 					</CustomCard>
-				</Form>
-			)}
+				) : (
+					<CustomRow justify={'center'}>
+						<Spin spinning size='large' />
+					</CustomRow>
+				)}
+			</Form>
 		</CustomContent>
 	);
 };

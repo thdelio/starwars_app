@@ -3,7 +3,6 @@ import { Layout } from 'antd';
 import { LayoutProps } from 'antd/lib/layout';
 
 export type CustomLayoutProps = LayoutProps & {
-	className?: string;
 	style?: React.CSSProperties;
 };
 
