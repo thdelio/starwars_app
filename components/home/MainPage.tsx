@@ -33,7 +33,7 @@ const MainPage: FC<IProps> = ({
 			{characters?.length && (
 				<CustomRow justify={'center'}>
 					<Title level={2} id='text'>
-						All Characters
+						All Characters plus
 					</Title>
 				</CustomRow>
 			)}
