@@ -22,7 +22,6 @@ pipeline {
         stage('Deliver') {
             steps {
                 bat './jenkins/scripts/build.bat'
-                bat './jenkins/scripts/killold.bat'
                 bat './jenkins/scripts/deliver.bat'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 bat './jenkins/scripts/kill.bat'
