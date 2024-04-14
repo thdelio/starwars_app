@@ -4,6 +4,10 @@ pipeline {
      environment {
             CI = 'true'
         }
+    triggers {
+        // Trigger the pipeline when changes are pushed to the main branch
+        pollSCM('*/1 * * * *') // Polls the SCM every 5 minutes
+    }
     stages {
         stage('Prepare') {
             steps {
