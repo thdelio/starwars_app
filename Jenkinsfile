@@ -5,20 +5,25 @@ pipeline {
             CI = 'true'
         }
     stages {
-        stage('Build') {
+        stage('Prepare') {
             steps {
                 bat './jenkins/scripts/prepare.bat'
             }
         }
+        stage('Build') {
+            steps {
+                bat './jenkins/scripts/build.bat'
+            }
+        }
         stage('Test') {
-                    steps {
-                        bat './jenkins/scripts/test.bat'
-                    }
-                }
-                stage('Deliver') {
-                            steps {
-                                bat './jenkins/scripts/deliver.bat'
-                            }
+            steps {
+                bat './jenkins/scripts/test.bat'
+            }
+        }
+        stage('Deliver') {
+            steps {
+                bat './jenkins/scripts/deliver.bat'
+            }
                         }
 
     }
