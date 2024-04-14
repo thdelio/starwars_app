@@ -2,7 +2,9 @@
 echo Buscando el proceso que utiliza el puerto 3000...
 for /f "tokens=5" %%a in ('netstat -aon ^| find ":3000"') do (
     echo Proceso encontrado: %%a
-    taskkill /F /PID %%a
+    if %%a NEQ 0 (
+        taskkill /F /PID %%a
+    )
 )
 
 if not exist %%a (
