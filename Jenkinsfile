@@ -9,14 +9,9 @@ pipeline {
         pollSCM('*/1 * * * *') // Polls the SCM every 5 minutes
     }
     stages {
-        stage('Prepare') {
-            steps {
-                bat './jenkins/scripts/prepare.bat'
-            }
-        }
         stage('Build') {
             steps {
-                bat './jenkins/scripts/build.bat'
+                bat './jenkins/scripts/prepare.bat'
             }
         }
         stage('Test') {
