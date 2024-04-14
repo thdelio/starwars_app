@@ -1,10 +1,8 @@
 
 @echo off
 echo Running npm build...
-npm run build
+npm run build:start
 
-echo Running npm start...
-npm run start
 
 timeout /t 1 /nobreak >nul
 tasklist /FI "WINDOWTITLE eq npm run start" | findstr npm > .pidfile
